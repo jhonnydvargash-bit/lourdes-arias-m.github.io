@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de Progreso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        /* Estilos para la barra de progreso */
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 25px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 30px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 25px;
+            transition: width 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .progress-info {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puntaje Lourdes Arias M.</h1>
+        
+        <div class="progress-info">
+            Puntaje: <span id="progress-text">0%\</span>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">0puntos</div>
+        </div>
+        
+        <div class="controls">
+            <!-- <button onclick="decreaseProgress()" id="decrease-btn">-10%</button> -->
+            <!-- <button onclick="resetProgress()" id="reset-btn">Reiniciar</button> -->
+            <!-- <button onclick="increaseProgress()" id="increase-btn">+10%</button> -->
+        </div>
+        
+        <div class="controls">
+            Nota: el puntaje se actualiza cada 4 dias o hasta que Jhonny Vargas Herbas (gato mayor) se acuerde o lo decida. 
+            <!-- <button onclick="startAutoProgress()" id="auto-btn">Progreso Automático</button> -->
+            <!-- <button onclick="stopAutoProgress()" id="stop-btn" disabled>Detener</button> -->
+        </div>
+        <div class="controls">
+            
+        </div>
+    </div>
+
+    <script>
+        let progress = 85;
+        let autoProgressInterval;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            // Limitar el progreso entre 0% y 100%
+            progress = Math.max(0, Math.min(100, progress));
+            
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+            progressText.textContent = Math.round(progress) + '%';
+            
+            // Actualizar estado de los botones
+            document.getElementById('decrease-btn').disabled = progress <= 0;
+            document.getElementById('increase-btn').disabled = progress >= 100;
+        }
+
+        function increaseProgress() {
+            progress += 10;
+            updateProgress();
+        }
+
+        function decreaseProgress() {
+            progress -= 10;
+            updateProgress();
+        }
+
+        function resetProgress() {
+            progress = 0;
+            updateProgress();
+            stopAutoProgress();
+        }
+
+        function startAutoProgress() {
+            stopAutoProgress(); // Detener cualquier progreso automático previo
+            
+            autoProgressInterval = setInterval(() => {
+                if (progress < 100) {
+                    progress += 1;
+                    updateProgress();
+                } else {
+                    stopAutoProgress();
+                }
+            }, 100);
+            
+            // Actualizar estado de los botones
+            document.getElementById('auto-btn').disabled = true;
+            document.getElementById('stop-btn').disabled = false;
+        }
+
+        function stopAutoProgress() {
+            if (autoProgressInterval) {
+                clearInterval(autoProgressInterval);
+                autoProgressInterval = null;
+            }
+            
+            // Actualizar estado de los botones
+            document.getElementById('auto-btn').disabled = false;
+            document.getElementById('stop-btn').disabled = true;
+        }
+
+        // Inicializar
+        updateProgress();
+    </script>
+</body>
+</html>
