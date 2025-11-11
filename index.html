@@ -1,184 +1,166 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pretty Lu</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pretty Lu</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f0f0, #dfe9f3);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 600px;
+      animation: aparecer 0.6s ease-in-out;
+    }
 
-        h1 {
-            color: #333;
-            text-align: center;
-        }
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* Estilos para la barra de progreso */
-        .progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 25px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+      font-size: 2em;
+      letter-spacing: 1px;
+    }
 
-        .progress-bar {
-            width: 0%;
-            height: 30px;
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            border-radius: 25px;
-            transition: width 0.5s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
+    .progress-container {
+      background-color: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 35px;
+      width: 100%;
+      margin-bottom: 25px;
+      position: relative;
+    }
 
-        .controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
+    .progress-bar {
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      height: 100%;
+      width: 0;
+      transition: width 0.8s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
 
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+    .star {
+      font-size: 2.2em;
+      color: #ccc;
+      transition: transform 0.2s, color 0.2s;
+    }
 
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
+    .star.selected {
+      color: gold;
+      transform: scale(1.1);
+    }
 
-        .progress-info {
-            text-align: center;
-            margin: 10px 0;
-            font-size: 18px;
-            color: #666;
-        }
-    </style>
+    .comentarios {
+      margin-top: 25px;
+    }
+
+    .comentario {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      border-left: 5px solid #4CAF50;
+      font-size: 1em;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .comentario strong {
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 500px) {
+      .star {
+        font-size: 1.6em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Pretty Lu</h1>
-        
-        <div class="progress-info">
-            Puntaje: <span id="progress-text">0%\</span>
-        </div>
-        
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar">0puntos</div>
-        </div>
-        
-        <div class="controls">
-            <!-- <button onclick="decreaseProgress()" id="decrease-btn">-10%</button> -->
-            <!-- <button onclick="resetProgress()" id="reset-btn">Reiniciar</button> -->
-            <!-- <button onclick="increaseProgress()" id="increase-btn">+10%</button> -->
-        </div>
-        
-        <div class="controls">
-            Nota: El sistema no puede marcar mas de 100, apesar que Lu  sobrepasa los 200.
-            <!-- <button onclick="startAutoProgress()" id="auto-btn">Progreso Automático</button> -->
-            <!-- <button onclick="stopAutoProgress()" id="stop-btn" disabled>Detener</button> -->
-        </div>
-        <div class="controls">
-            
-        </div>
+  <div class="container">
+    <h1 id="titulo"></h1>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="barra"></div>
     </div>
 
-    <script>
-        let progress = 100;
-        let autoProgressInterval;
+    <div class="stars" id="estrellas"></div>
 
-        function updateProgress() {
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            
-            // Limitar el progreso entre 0% y 100%
-            progress = Math.max(0, Math.min(100, progress));
-            
-            progressBar.style.width = progress + '%';
-            progressBar.textContent = Math.round(progress) + '%';
-            progressText.textContent = Math.round(progress) + '%';
-            
-            // Actualizar estado de los botones
-            document.getElementById('decrease-btn').disabled = progress <= 0;
-            document.getElementById('increase-btn').disabled = progress >= 100;
-        }
+    <div class="comentarios" id="comentarios"></div>
+  </div>
 
-        function increaseProgress() {
-            progress += 10;
-            updateProgress();
-        }
+  <script>
+    // Variables configurables
+    const titulo = "Pretty Lu";
+    const progreso = 85; // porcentaje (0 a 100)
+    const estrellasTotales = 5;
+    const estrellasSeleccionadas = 4;
+    const listaComentarios = [
+      { usuario: "Jhonny", texto: "Me llevó por un helado, puntos extra 🍦" },
+      { usuario: "Jhonny", texto: "Muy buen helado, textura perfecta." },
+      { usuario: "Dymr", texto: "Me anima en los momentos más críticos ❤️." }
+    ];
 
-        function decreaseProgress() {
-            progress -= 10;
-            updateProgress();
-        }
+    // Mostrar título
+    document.getElementById("titulo").textContent = titulo;
 
-        function resetProgress() {
-            progress = 0;
-            updateProgress();
-            stopAutoProgress();
-        }
+    // Actualizar barra de progreso con porcentaje
+    const barra = document.getElementById("barra");
+    setTimeout(() => {
+      barra.style.width = progreso + "%";
+      barra.textContent = progreso + "%";
+    }, 300);
 
-        function startAutoProgress() {
-            stopAutoProgress(); // Detener cualquier progreso automático previo
-            
-            autoProgressInterval = setInterval(() => {
-                if (progress < 100) {
-                    progress += 1;
-                    updateProgress();
-                } else {
-                    stopAutoProgress();
-                }
-            }, 100);
-            
-            // Actualizar estado de los botones
-            document.getElementById('auto-btn').disabled = true;
-            document.getElementById('stop-btn').disabled = false;
-        }
+    // Crear estrellas (solo visual)
+    const contenedorEstrellas = document.getElementById("estrellas");
+    for (let i = 1; i <= estrellasTotales; i++) {
+      const estrella = document.createElement("span");
+      estrella.textContent = "★";
+      estrella.classList.add("star");
+      if (i <= estrellasSeleccionadas) estrella.classList.add("selected");
+      contenedorEstrellas.appendChild(estrella);
+    }
 
-        function stopAutoProgress() {
-            if (autoProgressInterval) {
-                clearInterval(autoProgressInterval);
-                autoProgressInterval = null;
-            }
-            
-            // Actualizar estado de los botones
-            document.getElementById('auto-btn').disabled = false;
-            document.getElementById('stop-btn').disabled = true;
-        }
-
-        // Inicializar
-        updateProgress();
-    </script>
+    // Mostrar comentarios estáticos
+    const contenedorComentarios = document.getElementById("comentarios");
+    listaComentarios.forEach(c => {
+      const div = document.createElement("div");
+      div.classList.add("comentario");
+      div.innerHTML = `<strong>${c.usuario}</strong>${c.texto}`;
+      contenedorComentarios.appendChild(div);
+    });
+  </script>
 </body>
-
 </html>
-
-
